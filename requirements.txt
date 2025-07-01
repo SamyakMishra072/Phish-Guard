@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+scikit-learn
+pandas
+beautifulsoup4
+python-whois
+cryptography
+tensorflow   # for the deep‐learning variant
+selenium     # for optional page‐rendering features
+prometheus-client
