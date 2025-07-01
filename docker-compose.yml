@@ -1,0 +1,35 @@
+services:
+  feature_extractor:
+    build:
+      context: .                     # stay at project root
+      dockerfile: deployment/Dockerfile.fe
+    ports:
+      - "8001:8001"
+
+  inference_engine:
+    build:
+      context: .
+      dockerfile: deployment/Dockerfile.inf
+    depends_on:
+      - feature_extractor
+    ports:
+      - "8002:8002"
+    expose:
+      - "8003"
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./dashboard/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./dashboard/grafana/provisioning:/etc/grafana/provisioning
+      - ./dashboard/grafana/dashboards:/var/lib/grafana/dashboards
