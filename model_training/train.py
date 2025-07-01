@@ -4,7 +4,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, roc_auc_score
 import joblib
-
 # 1. Load labeled CSV of features + label
 df = pd.read_csv("data/phish_dataset.csv")
 X = df.drop('label', axis=1)

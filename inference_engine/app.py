@@ -24,7 +24,7 @@ clf = joblib.load("model/phish_clf.joblib")
 @app.post("/predict/")
 async def predict(req: URLRequest):
     # call feature‐extractor service
-    r = requests.post("http://feature_extractor:8001/features/", json={"url": req.url})
+    r = requests.post("http://feature_extractor:8001/features/", json={"url": str(req.url)})
     feats = r.json()["features"]
     # ensure feature order
     X = [feats[k] for k in sorted(feats.keys())]
