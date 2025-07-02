@@ -1,10 +1,14 @@
+version: "3.9"
+
 services:
   feature_extractor:
     build:
-      context: .                     # stay at project root
+      context: .
       dockerfile: deployment/Dockerfile.fe
     ports:
       - "8001:8001"
+    networks:
+      - phishnet
 
   inference_engine:
     build:
@@ -14,8 +18,8 @@ services:
       - feature_extractor
     ports:
       - "8002:8002"
-    expose:
-      - "8003"
+    networks:
+      - phishnet
 
   prometheus:
     image: prom/prometheus
@@ -23,6 +27,8 @@ services:
       - ./dashboard/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
+    networks:
+      - phishnet
 
   grafana:
     image: grafana/grafana
@@ -33,3 +39,9 @@ services:
     volumes:
       - ./dashboard/grafana/provisioning:/etc/grafana/provisioning
       - ./dashboard/grafana/dashboards:/var/lib/grafana/dashboards
+    networks:
+      - phishnet
+
+networks:
+  phishnet:
+    driver: bridge
